@@ -12,7 +12,7 @@ function computerPlay() { // return either Rock, Paper, or Scissors randomly
     return playArr[randomNumber];
 }
 
-const playerInput = "ROCK";
+let playerInput;
 let compScore;
 let playerScore;
 
@@ -20,13 +20,17 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-const playerSelection = capitalizeFirstLetter(playerInput);
+let playerSelection;
 let computerSelection;
 
 
 function playRound() { // take two parameters (playerSelection and computerSelection) and return string declaring winner of round
     // logic to decide which play beats other plays
+
     computerSelection = computerPlay();
+    playerInput = prompt("Rock, Paper, or Scissors?");
+    playerSelection = capitalizeFirstLetter(playerInput);
+
     if (playerSelection === computerSelection)
     {
         return "Tie!";
