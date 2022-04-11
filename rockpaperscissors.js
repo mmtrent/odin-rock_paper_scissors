@@ -1,88 +1,105 @@
 function computerPlay() { // return either Rock, Paper, or Scissors randomly
-    
     const playArr = [ // create array of three strings: Rock, Paper, and Scissors
-        'Rock',
-        'Paper',
-        'Scissors'
+        'rock',
+        'paper',
+        'scissors'
     ];
-
     // generate random number between 1 and the length of the plays array (3)
     const randomNumber = Math.floor(Math.random()*playArr.length);
-
     return playArr[randomNumber];
 }
 
 let playerInput; 
-let compScore;
-let playerScore;
-
-function capitalizeFirstLetter(string) { // ensure string is formatted with first letter capitalized and the rest of the letters lower case
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
-
+let compScore = 0;
+let playerScore = 0;
+let round = 0;
 let playerSelection; // variable to store the formatted player move selection
 let computerSelection; // variable to store the computers move from the computerPlay function
 
 
 function playRound() { // take two parameters (playerSelection and computerSelection) and return string declaring winner of round
     computerSelection = computerPlay(); // run computerPlay function and store the returned result in variable
-    playerInput = prompt("Rock, Paper, or Scissors?"); // prompt user for their move selection
-    playerSelection = capitalizeFirstLetter(playerInput); // format the user input
+    // playerInput = prompt("Rock, Paper, or Scissors?"); // prompt user for their move selection
+    // playerSelection = playerInput.toLowerCase(); // format the user input
 
     if (playerSelection === computerSelection) // if player and computer have the same move, return a tie and don't increment either score
     {
-        return "Tie!";
+        results.textContent = `Computer picks ${computerSelection}, Tie!`;
     }
-    else if (playerSelection === "Rock") { // if player selects rock, check against game logic and increment the appropriate score
-        if (computerSelection === "Scissors") {
+    else if (playerSelection === "rock") { // if player selects rock, check against game logic and increment the appropriate score
+        if (computerSelection === "scissors") {
             playerScore ++;
-            return "You Win. Rock beats Scissors";
+            results.textContent = "You win this round. Rock beats scissors";
         } else {
             compScore++;
-            return "You Lose. Paper beats Rock";
+            results.textContent = "You lose this round. Paper beats rock";
         }
     }
-    else if (playerSelection === "Paper") {
-        if (computerSelection === "Rock") {
+    else if (playerSelection === "paper") {
+        if (computerSelection === "rock") {
             playerScore ++;
-            return "You Win. Paper beats Rock.";
+            results.textContent = "You win. Paper beats rock.";
         } else {
             compScore ++;
-            return "You Lose. Scissors beats Paper.";
+            results.textContent = "You lose. Scissors beats paper.";
         }
     }
-    else if (playerSelection === "Scissors") {
-        if (computerSelection === "Paper") {
+    else if (playerSelection === "scissors") {
+        if (computerSelection === "paper") {
             playerScore ++;
-            return "You Win. Scissors beats Paper";
+            results.textContent = "You win. Scissors beats paper";
         } else {
             compScore ++;
-            return "You Lose. Rock beats Scissors";
+            results.textContent = "You lose. Rock beats scissors";
         }
     }
+    round ++;
+    gameScore.textContent = `Round ${round} Computer: ${compScore} Your Score: ${playerScore}`;
+    if (round > 4) {
+        endGame();
+    }
+    
 }
 
-
-function game() { // function to call the playRound function i number of times, increment player and computer scores, decide the winner and print to console
-    compScore = 0;
-    playerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        console.log(playRound(playerSelection, computerSelection)); // play 5 rounds of Rock, Paper, Scissors
-    }
-
+function endGame() { // function to call the playRound function i number of times, increment player and computer scores, decide the winner and print to console
+    playButtons.style.display = 'none';
+    
     console.log("Your score is: " + playerScore);
     console.log("The computer's score is: " + compScore);
 
     if (playerScore > compScore) {
-        console.log("Congratulations, you win!");
+        finalResults.textContent = "Congratulations, you win!";
     }
     else if (compScore > playerScore) {
-        console.log("Sorry, you lose.");
+        finalResults.textContent = "Sorry, you lose the game.";
     }
     else {
-        console.log("Tie!");
+        finalResults.textContent = "Tie!";
     }
 }
 
-game(); // call game function
+const gameScore = document.querySelector('#gameScore');
+const playButtons = document.querySelector('#playButtons');
+const finalResults = document.querySelector('#finalResults');
+const rockButton = document.querySelector('#rock');
+rockButton.addEventListener('click', () => {
+    playerSelection = "rock"; // record Rock user play selection
+    playRound();
+});
+
+const paperButton = document.querySelector('#paper');
+paperButton.addEventListener('click', () => {
+    playerSelection = "paper"; // record Paper user play selection
+    playRound();
+});
+
+const scissorsButton = document.querySelector('#scissors');
+scissorsButton.addEventListener('click', () => {
+    playerSelection = "scissors";// record Scissors user play selection
+    playRound();
+});
+
+const results = document.querySelector('#results');
+
+
+// game(); // call game function
